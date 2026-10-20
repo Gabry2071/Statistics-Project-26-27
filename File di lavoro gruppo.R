@@ -23,13 +23,22 @@
 #install.packages("dplyr")
 library(dplyr)
 library(readxl)
-dataset = read_excel("Debernardi et al 2020 data.xlsx", sheet = 'Dataset scremato') #this is the complete raw dataset (filtering from excel does not hold when you import the file)
-data_diagnosis1 <- dataset%>% 
-  filter(diagnosis == 1) # No Pancreatic
-data_diagnosis2 <- dataset%>% 
-  filter(diagnosis == 2) # Benign
-data_diagnosis3 <- dataset%>% 
-  filter(diagnosis == 3) #PDAC
+
+dataset= read_xlsx("Debernardi et al 2020 data.xlsx", sheet = 'Dataset scremato')[1:8]
+#this is the complete raw dataset (filtering from excel does not hold when you import the file)
+
+##important to state we are dealing with NUMBERS
+dataset$LYVE1 <- as.numeric(dataset$LYVE1)
+dataset$creatinine <- as.numeric(dataset$creatinine)
+dataset$REG1B <- as.numeric(dataset$REG1B)
+dataset$TFF1 <- as.numeric(dataset$TFF1)
+
+
+##Creating columns for normalised values
+dataset$LYVE1_Norm <- dataset$LYVE1 / dataset$creatinine
+dataset$REG1B_Norm <- dataset$REG1B / dataset$creatinine
+dataset$TFF1_Norm <- dataset$TFF1 / dataset$creatinine
+
 
 
 #### EXPLORATIVE ANALYSIS ####
@@ -60,8 +69,12 @@ data_diagnosis3 <- dataset%>%
 
 #### REG1B ####
 # Description an analysis of: REG1B
+reg1b_1 = dataset$REG1B_Norm[dataset$diagnosis == 1] #reg1b normalised values for DIAGNOSIS 1
+reg1b_2 = dataset$REG1B_Norm[dataset$diagnosis == 2] #reg1b normalised values for DIAGNOSIS 2
+reg1b_3 = dataset$REG1B_Norm[dataset$diagnosis == 3] #reg1b normalised values for DIAGNOSIS 3
 
 # MEAN 
+
 
 #MEDIAN
 
@@ -74,6 +87,7 @@ data_diagnosis3 <- dataset%>%
 #RANGE
 
 #INTERQUANTILE RANGE
+
 
 
 #### TFF1 ####
