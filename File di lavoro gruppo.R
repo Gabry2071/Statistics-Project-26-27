@@ -46,19 +46,58 @@ anyNA(dataset) #FALSE, (luckily) there are no NAs in the dataset
 #### LYVE1 ####
 # Description an analysis of: LYVE1
 
+LYVE1_1 = dataset$LYVE1_Norm[dataset$diagnosis == 1]
+LYVE1_2 = dataset$LYVE1_Norm[dataset$diagnosis == 2]
+LYVE1_3 = dataset$LYVE1_Norm[dataset$diagnosis == 3]
+
+summary(LYVE1_1)
+summary(LYVE1_2)
+summary(LYVE1_3)
+
 # MEAN 
+LYVE1_m1 = mean(LYVE1_1) # 1.298312 mean diagnosis 1
+LYVE1_m2 = mean(LYVE1_2) # 3.211062 mean diagnosis 2
+LYVE1_m3 = mean(LYVE1_3) # 9.488336 mean diagnosis 3
 
 #MEDIAN
+LYVE1_med1 = median(LYVE1_1) # 0.249782 median diagnosis 1
+LYVE1_med2 = median(LYVE1_2) # 1.516199 median diagnosis 2
+LYVE1_med3 = median(LYVE1_3) # 6.998147 median diagnosis 3
 
 #QUANTILES
+LYVE1_q1 = quantile(LYVE1_1) # quantiles diagnosis 1
+LYVE1_q1
+LYVE1_q2 = quantile(LYVE1_2) # quantiles diagnosis 2
+LYVE1_q2
+LYVE1_q3 = quantile(LYVE1_3) # quantiles diagnosis 3
+LYVE1_q3
 
 #VARIANCE
+LYVE1_var1 = var(LYVE1_1) # 4.208431
+LYVE1_var2 = var(LYVE1_2) # 32.360116
+LYVE1_var3 = var(LYVE1_3) # 78.764954
 
 #STANDARD DEVIATION 
-
-#RANGE
+LYVE1_sd1 = sd(LYVE1_1) # 2.051446 sd diagnosis 1
+LYVE1_sd2 = sd(LYVE1_2) # 5.688595 sd diagnosis 2
+LYVE1_sd3 = sd(LYVE1_3) # 8.874962 sd diagnosis 3
 
 #INTERQUANTILE RANGE
+LYVE1_iqr1 = IQR(LYVE1_1) # 1.720555 iqr diagnosis 1
+LYVE1_iqr2 = IQR(LYVE1_2) # 3.592694 iqr diagnosis 2
+LYVE1_iqr3 = IQR(LYVE1_3) # 9.532367 iqr diagnosis 3
+
+#HISTOGRAMS
+library(MASS)
+truehist(LYVE1_1, nbins = "FD") 
+truehist(LYVE1_2, nbins = "FD")
+truehist(LYVE1_3, nbins = "FD")
+
+par(mfrow = c(1,3))
+hist(LYVE1_1, xlab = 'LYVE1', main = 'LYVE1 CONTROL')
+hist(LYVE1_2, xlab = 'LYVE1', main = 'LYVE1 BENIGN')
+hist(LYVE1_3, xlab = 'LYVE1', main = 'LYVE1 MALIGNANT')
+dev.off()
 
 
 
