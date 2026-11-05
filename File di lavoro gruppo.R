@@ -22,7 +22,7 @@ options(scipen = 999)
 library(dplyr)
 library(readxl)
 
-dataset = read_xlsx("Debernardi et al 2020 data.xlsx", sheet = 'Dataset scremato')[1:8] 
+dataset = read_xlsx("dataset_stats.xlsx")[1:6] #dataset scremato (senza age e sex)
 #this is the complete raw dataset (filtering from excel does not hold when you import the file)
 
 ##important to state we are dealing with NUMBERS
@@ -152,6 +152,7 @@ truehist(reg1b_3, nbins = "FD")
 
 par(mfrow = c(1,3))
 hist(reg1b_1, xlab = 'REG1B', main = 'REG1B CONTROL')
+
 hist(reg1b_2, xlab = 'REG1B', main = 'REG1B BENIGN')
 hist(reg1b_3, xlab = 'REG1B', main = 'REG1B MALIGNANT')
 dev.off()
@@ -216,4 +217,6 @@ dev.off()
 
 
 #SCATTERPLOT (PAIRWISE) #confronto nello stesso gruppo due marcatori diversi
+
 #stessa cosa per Correlazione e Covarianza
+
