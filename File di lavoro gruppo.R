@@ -169,14 +169,14 @@ summary(TFF1_2)
 summary(TFF1_3)
 
 # MEAN 
-TFF1_m1 = mean(TFF1_1) # 170.6077 mean diagnosis 1
-TFF1_m2 = mean(TFF1_2) # 575.3879 mean diagnosis 2
-TFF1_m3 = mean(TFF1_3) # 1622.2862 mean diagnosis 3
+TFF1_m1 = mean(TFF1_1) # 171.48 mean diagnosis 1
+TFF1_m2 = mean(TFF1_2) # 575.388 mean diagnosis 2
+TFF1_m3 = mean(TFF1_3) # 1620.886 mean diagnosis 3
 
 #MEDIAN
-TFF1_med1 = median(TFF1_1) # 101.8855 median diagnosis 1
-TFF1_med2 = median(TFF1_2) # 312.3404 median diagnosis 2
-TFF1_med3 = median(TFF1_3) # 997.5173 median diagnosis 3
+TFF1_med1 = median(TFF1_1) # 102.145 median diagnosis 1
+TFF1_med2 = median(TFF1_2) # 312.34 median diagnosis 2
+TFF1_med3 = median(TFF1_3) # 1001.937 median diagnosis 3
 
 #QUANTILES
 TFF1_q1 = quantile(TFF1_1) # quantiles diagnosis 1
@@ -187,19 +187,19 @@ TFF1_q3 = quantile(TFF1_3) # quantiles diagnosis 3
 TFF1_q3
 
 #VARIANCE
-TFF1_var1 = var(TFF1_1) # 51303.2133
-TFF1_var2 = var(TFF1_2) # 680287.3058
-TFF1_var3 = var(TFF1_3) # 5052564.6897
+TFF1_var1 = var(TFF1_1) # 51444.451
+TFF1_var2 = var(TFF1_2) # 680287.305
+TFF1_var3 = var(TFF1_3) # 5027436.525
 
 #STANDARD DEVIATION 
-TFF1_sd1 = sd(TFF1_1) # 226.5021 sd diagnosis 1
-TFF1_sd2 = sd(TFF1_2) # 824.7953 sd diagnosis 2
-TFF1_sd3 = sd(TFF1_3) # 2247.7910 sd diagnosis 3
+TFF1_sd1 = sd(TFF1_1) # 226.813 sd diagnosis 1
+TFF1_sd2 = sd(TFF1_2) # 824.795 sd diagnosis 2
+TFF1_sd3 = sd(TFF1_3) # 2242.194 sd diagnosis 3
 
 #INTERQUANTILE RANGE
-TFF1_iqr1 = IQR(TFF1_1) # 221.3230 iqr diagnosis 1
-TFF1_iqr2 = IQR(TFF1_2) # 545.5810 iqr diagnosis 2
-TFF1_iqr3 = IQR(TFF1_3) # 1739.7581 iqr diagnosis 3
+TFF1_iqr1 = IQR(TFF1_1) # 222.1916 iqr diagnosis 1
+TFF1_iqr2 = IQR(TFF1_2) # 545.581 iqr diagnosis 2
+TFF1_iqr3 = IQR(TFF1_3) # 1710.734 iqr diagnosis 3
 
 #HISTOGRAMS
 library(MASS)
