@@ -22,7 +22,7 @@ options(scipen = 999)
 library(dplyr)
 library(readxl)
 
-dataset = read_xlsx("dataset_stats.xlsx")[1:6] #dataset scremato (senza age e sex)
+dataset = read_xlsx("dataset_stats.xlsx")[1:8] #dataset scremato (senza age e sex)
 #this is the complete raw dataset (filtering from excel does not hold when you import the file)
 
 ##important to state we are dealing with NUMBERS
