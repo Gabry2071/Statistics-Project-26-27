@@ -215,6 +215,58 @@ dev.off()
 
 #### SCATTERPLOTS, VARIANCE AND COVARIANCE PAIRWISE ####
 
+par(mfrow = c(1,3))
+# LYVE1 vs REG1B
+plot(LYVE1_1, reg1b_1,
+     xlab = "LYVE1", ylab = "REG1B",
+     main = "CONTROL")
+
+cor(LYVE1_1, reg1b_1) # -0.01548522
+cov(LYVE1_1, reg1b_1) # -2.820755
+# LYVE1 vs TFF1
+plot(LYVE1_1, TFF1_1,
+     xlab = "LYVE1", ylab = "TFF1",
+     main = "CONTROL")
+
+cor(LYVE1_1, TFF1_1) # 0.4644655
+cov(LYVE1_1, TFF1_1) # 216.5927
+# REG1B vs TFF1
+plot(reg1b_1, TFF1_1,
+     xlab = "REG1B", ylab = "TFF1",
+     main = "CONTROL")
+
+cor(reg1b_1, TFF1_1) # 0.1355866
+cov(reg1b_1, TFF1_1) # 2724.664
+
+####################
+
+#la prossima come idea per matrice di scatterplot con regressione lineare
+#la metto tutta come commento per ora (file esempio caricato come )
+
+# pairs(dataset[dataset$diagnosis == 1,
+#               c("LYVE1_Norm", "REG1B_Norm", "TFF1_Norm")],
+#       panel = function(x, y, ...) {
+#         points(x, y)
+#         
+#         # Calcolo della regressione lineare
+#         modello = lm(y ~ x)
+#         
+#         # Disegno della retta
+#         abline(modello, col = "red")
+#         
+#         # Intercetta e pendenza
+#         a = coef(modello)[1]
+#         b = coef(modello)[2]
+#         
+#         # Equazione con 6 cifre significative
+#         legend("topright",
+#                legend = sprintf("y = %.6g %+.6g x", a, b),
+#                bty = "o", cex = 0.9)
+#       },
+#       main = "CONTROL")
+
+#####################
+
 
 #SCATTERPLOT (PAIRWISE) #confronto nello stesso gruppo due marcatori diversi
 
