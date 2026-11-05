@@ -214,7 +214,7 @@ hist(TFF1_3, xlab = 'TFF1', main = 'TFF1 MALIGNANT')
 dev.off()
 
 #### SCATTERPLOTS, VARIANCE AND COVARIANCE PAIRWISE ####
-
+#CONTROL
 par(mfrow = c(1,3))
 # LYVE1 vs REG1B
 plot(LYVE1_1, reg1b_1,
@@ -238,7 +238,57 @@ plot(reg1b_1, TFF1_1,
 cor(reg1b_1, TFF1_1) # 0.1355866
 cov(reg1b_1, TFF1_1) # 2724.664
 
-####################
+#################### BENIGN
+
+par(mfrow = c(1,3))
+# LYVE1 vs REG1B
+plot(LYVE1_2, reg1b_2,
+     xlab = "LYVE1", ylab = "REG1B",
+     main = "BENIGN")
+
+cor(LYVE1_2, reg1b_2) # 0.2452998
+cov(LYVE1_2, reg1b_2) # 326.1649
+# LYVE1 vs TFF1
+plot(LYVE1_2, TFF1_2,
+     xlab = "LYVE1", ylab = "TFF1",
+     main = "BENIGN")
+
+cor(LYVE1_2, TFF1_2) # 0.4292406
+cov(LYVE1_2, TFF1_2) # 2013.965
+# REG1B vs TFF1
+plot(reg1b_2, TFF1_2,
+     xlab = "REG1B", ylab = "TFF1",
+     main = "BENIGN")
+
+cor(reg1b_2, TFF1_2) # 0.4392715
+cov(reg1b_2, TFF1_2) # 84686.51
+
+############### MALIGNANT
+
+par(mfrow = c(1,3))
+# LYVE1 vs REG1B
+plot(LYVE1_3, reg1b_3,
+     xlab = "LYVE1", ylab = "REG1B",
+     main = "MALIGNANT")
+
+cor(LYVE1_3, reg1b_3) # 0.42723
+cov(LYVE1_3, reg1b_3) # 1816.364
+# LYVE1 vs TFF1
+plot(LYVE1_3, TFF1_3,
+     xlab = "LYVE1", ylab = "TFF1",
+     main = "MALIGNANT")
+
+cor(LYVE1_3, TFF1_3) # 0.3842481
+cov(LYVE1_3, TFF1_3) # 7630.953
+# REG1B vs TFF1
+plot(reg1b_3, TFF1_3,
+     xlab = "REG1B", ylab = "TFF1",
+     main = "MALIGNANT")
+
+cor(reg1b_3, TFF1_3) # 0.7202756
+cov(reg1b_3, TFF1_3) # 775209.9
+
+########################
 
 #la prossima come idea per matrice di scatterplot con regressione lineare
 #la metto tutta come commento per ora (file esempio caricato come )
