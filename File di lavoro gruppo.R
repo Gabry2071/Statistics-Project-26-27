@@ -29,6 +29,7 @@ dataset$LYVE1 <- as.numeric(dataset$LYVE1)
 dataset$creatinine <- as.numeric(dataset$creatinine)
 dataset$REG1B <- as.numeric(dataset$REG1B)
 dataset$TFF1 <- as.numeric(dataset$TFF1)
+dataset$diagnosis <- as.factor(dataset$diagnosis)
 
 
 ##Creating columns for normalised values
@@ -42,7 +43,7 @@ anyNA(dataset) #FALSE, (luckily) there are no NAs in the dataset
 
 ### EXPLORATIVE ANALYSIS ###
 
-####LYVE1 (CHECKED)####
+####LYVE1 ####
 # Description an analysis of: LYVE1
 
 LYVE1_1 = dataset$LYVE1_Norm[dataset$diagnosis == 1]
@@ -53,17 +54,17 @@ summary(LYVE1_1)
 summary(LYVE1_2)
 summary(LYVE1_3)
 
-# MEAN (CHECKED)
+# MEAN 
 LYVE1_m1 = mean(LYVE1_1) # 1.303221 mean diagnosis 1
 LYVE1_m2 = mean(LYVE1_2) # 3.211063 mean diagnosis 2
 LYVE1_m3 = mean(LYVE1_3) # 9.468053 mean diagnosis 3
 
-#MEDIAN (CHECKED)
+#MEDIAN 
 LYVE1_med1 = median(LYVE1_1) # 0.227452 median diagnosis 1
 LYVE1_med2 = median(LYVE1_2) # 1.516199 median diagnosis 2
 LYVE1_med3 = median(LYVE1_3) # 6.931753 median diagnosis 3
 
-#QUANTILES (CHECKED)
+#QUANTILES 
 LYVE1_q1 = quantile(LYVE1_1) # quantiles diagnosis 1
 LYVE1_q1
 LYVE1_q2 = quantile(LYVE1_2) # quantiles diagnosis 2
@@ -71,35 +72,35 @@ LYVE1_q2
 LYVE1_q3 = quantile(LYVE1_3) # quantiles diagnosis 3
 LYVE1_q3
 
-#VARIANCE (CHECKED)
+#VARIANCE 
 LYVE1_var1 = var(LYVE1_1) # 4.227097
 LYVE1_var2 = var(LYVE1_2) # 32.36012
 LYVE1_var3 = var(LYVE1_3) # 78.44902
 
-#STANDARD DEVIATION (CHECKED)
+#STANDARD DEVIATION 
 LYVE1_sd1 = sd(LYVE1_1) # 2.05599 sd diagnosis 1
 LYVE1_sd2 = sd(LYVE1_2) # 5.688595 sd diagnosis 2
 LYVE1_sd3 = sd(LYVE1_3) # 8.857145 sd diagnosis 3
 
-#INTERQUANTILE RANGE (CHECKED)
+#INTERQUANTILE RANGE 
 LYVE1_iqr1 = IQR(LYVE1_1) # 1.7334 iqr diagnosis 1
 LYVE1_iqr2 = IQR(LYVE1_2) # 3.592694 iqr diagnosis 2
 LYVE1_iqr3 = IQR(LYVE1_3) # 9.481684 iqr diagnosis 3
 
-#HISTOGRAMS (CHECKED)
+#HISTOGRAMS 
 #library(MASS)
 #truehist(LYVE1_1, nbins = "FD", xlab = 'LYVE1 expression', main = 'LYVE1 CONTROL') 
 #truehist(LYVE1_2, nbins = "FD", xlab = 'LYVE1 expression', main = 'LYVE1 CONTROL')
 #truehist(LYVE1_3, nbins = "FD", xlab = 'LYVE1 expression', main = 'LYVE1 CONTROL')
 
 par(mfrow = c(1,3))
-hist(LYVE1_1, xlab = 'LYVE1 expression', main = 'LYVE1 CONTROL')
-hist(LYVE1_2, xlab = 'LYVE1 expression', main = 'LYVE1 BENIGN')
-hist(LYVE1_3, xlab = 'LYVE1 expression', main = 'LYVE1 MALIGNANT')
+hist(LYVE1_1, xlab = 'LYVE1 expression', main = 'LYVE1 CONTROL', col ='#50C878')
+hist(LYVE1_2, xlab = 'LYVE1 expression', main = 'LYVE1 BENIGN', col = '#B284BE')
+hist(LYVE1_3, xlab = 'LYVE1 expression', main = 'LYVE1 MALIGNANT', col ='#FE0000')
 dev.off()
 
 
-#### REG1B (CHECKED)####
+#### REG1B ####
 # Description an analysis of: REG1B
 reg1b_1 = dataset$REG1B_Norm[dataset$diagnosis == 1] #reg1b normalised values for DIAGNOSIS 1
 reg1b_2 = dataset$REG1B_Norm[dataset$diagnosis == 2] #reg1b normalised values for DIAGNOSIS 2
@@ -109,12 +110,12 @@ summary (reg1b_1)
 summary (reg1b_2)
 summary (reg1b_3)
 
-# MEAN (CHECKED)
+# MEAN 
 reg1b_m1 = mean (reg1b_1) #58.49999 mean DIAGNOSIS 1
 reg1b_m2 = mean (reg1b_2) #106.6098 mean DIAGNOSIS 2
 reg1b_m3 = mean (reg1b_3) #346.6593 mean DIAGNOSIS 3
 
-#MEDIAN (CHECKED)
+#MEDIAN 
 reg1b_med1 = median (reg1b_1) #28.89873 median DIAGNOSIS 1
 reg1b_med2 = median (reg1b_2) #34.59517 median DIAGNOSIS 2
 reg1b_med3 = median (reg1b_3) #201.3776 median DIAGNOSIS 3
@@ -127,35 +128,35 @@ reg1b_q2
 reg1b_q3 = quantile (reg1b_3) #quantiles DIAGNOSIS 3
 reg1b_q3
 
-#VARIANCE (CHECKED)
+#VARIANCE 
 reg1b_var1 = var(reg1b_1) #7849.712 variance DIAGNOSIS 1
 reg1b_var2 = var(reg1b_2) #54634.88 variance DIAGNOSIS 2
 reg1b_var3 = var(reg1b_3) #230406.5 variance DIAGNOSIS 3
 
-#STANDARD DEVIATION (CHECKED)
-reg1b_sd1 = sqrt(reg1b_var1) #notice: it is THE SAME as sd(reg1b_1) #88.5986 SD DIAGNOSIS 1
+#STANDARD DEVIATION 
+reg1b_sd1 = sqrt(reg1b_var1) #notice: it is THE SAME as sd(reg1b_1) 88.5986
 reg1b_sd2 = sqrt(reg1b_var2) #233.741 SD DIAGNOSIS 2
 reg1b_sd3 = sqrt(reg1b_var3) #480.0067 SD DIAGNOSIS 3
 
-#INTERQUANTILE RANGE (CHECKED)
+#INTERQUANTILE RANGE 
 reg1b_iqr1 = IQR(reg1b_1)#56.01297 IQR DIAGNOSIS 1
 reg1b_iqr2 = IQR(reg1b_2) #79.95126 IQR DIAGNOSIS 2
 reg1b_iqr3 = IQR(reg1b_3) #370.2075 IQR DIAGNOSIS 3
 
 #HISTOGRAMS
-library(MASS)
-truehist(reg1b_1, nbins = "FD") #FD sta per Freedman-Diaconis, una regola per scegliere automaticamente la larghezza delle barre (bin width) di un istogramma.
-truehist(reg1b_2, nbins = "FD")
-truehist(reg1b_3, nbins = "FD")
+#library(MASS)
+#truehist(reg1b_1, nbins = "FD") #FD sta per Freedman-Diaconis, una regola per scegliere automaticamente la larghezza delle barre (bin width) di un istogramma.
+#truehist(reg1b_2, nbins = "FD")
+#truehist(reg1b_3, nbins = "FD")
 
 par(mfrow = c(1,3))
-hist(reg1b_1, xlab = 'REG1B', main = 'REG1B CONTROL')
-hist(reg1b_2, xlab = 'REG1B', main = 'REG1B BENIGN')
-hist(reg1b_3, xlab = 'REG1B', main = 'REG1B MALIGNANT')
+hist(reg1b_1, xlab = 'REG1B expression', main = 'REG1B CONTROL', col ='#50C878')
+hist(reg1b_2, xlab = 'REG1B expression', main = 'REG1B BENIGN', col = '#B284BE')
+hist(reg1b_3, xlab = 'REG1B expression', main = 'REG1B MALIGNANT', col ='#FE0000')
 dev.off()
 
 
-#### TFF1 (CHECKED) ####
+#### TFF1  ####
 # Description an analysis of: TFF1
 TFF1_1 = dataset$TFF1_Norm[dataset$diagnosis == 1]
 TFF1_2 = dataset$TFF1_Norm[dataset$diagnosis == 2]
@@ -199,15 +200,15 @@ TFF1_iqr2 = IQR(TFF1_2) # 545.581 iqr diagnosis 2
 TFF1_iqr3 = IQR(TFF1_3) # 1710.734 iqr diagnosis 3
 
 #HISTOGRAMS
-library(MASS)
-truehist(TFF1_1, nbins = "FD") 
-truehist(TFF1_2, nbins = "FD")
-truehist(TFF1_3, nbins = "FD")
+#library(MASS)
+#truehist(TFF1_1, nbins = "FD") 
+#truehist(TFF1_2, nbins = "FD")
+#truehist(TFF1_3, nbins = "FD")
 
 par(mfrow = c(1,3))
-hist(TFF1_1, xlab = 'TFF1', main = 'TFF1 CONTROL')
-hist(TFF1_2, xlab = 'TFF1', main = 'TFF1 BENIGN')
-hist(TFF1_3, xlab = 'TFF1', main = 'TFF1 MALIGNANT')
+hist(TFF1_1, xlab = 'TFF1 expression', main = 'TFF1 CONTROL', col ='#50C878')
+hist(TFF1_2, xlab = 'TFF1 expression', main = 'TFF1 BENIGN', col = '#B284BE')
+hist(TFF1_3, xlab = 'TFF1 expression', main = 'TFF1 MALIGNANT', col ='#FE0000')
 dev.off()
 
 #### SCATTERPLOTS, VARIANCE AND COVARIANCE PAIRWISE ####
@@ -285,12 +286,23 @@ plot(reg1b_3, TFF1_3,
 cor(reg1b_3, TFF1_3) # 0.7202756
 cov(reg1b_3, TFF1_3) # 775209.9
 
+###  BOXPLOTS ###
+
+boxplot(LYVE1_Norm ~ diagnosis, data=dataset, col = c('#50C878', '#B284BE', '#FE0000'), ylab= 'LYVE1 expression')
+legend("topleft", legend = c("Control", "Benign", "Malignant"), fill = c('#50C878', '#B284BE', '#FE0000'), bty='n')
+
+boxplot(REG1B_Norm ~ diagnosis, data=dataset, col = c('#50C878', '#B284BE', '#FE0000'), ylab= 'REG1B expression')
+legend("topleft", legend = c("Control", "Benign", "Malignant"), fill = c('#50C878', '#B284BE', '#FE0000'), bty='n')
+
+boxplot(TFF1_Norm ~ diagnosis, data=dataset, col = c('#50C878', '#B284BE', '#FE0000'), ylab= 'TFF1 expression')
+legend("topleft", legend = c("Control", "Benign", "Malignant"), fill = c('#50C878', '#B284BE', '#FE0000'), bty='n')
+
 
 #### INFERENTIAL STATS ####
 dataset$diagnosis <- as.factor(dataset$diagnosis)
 
 
-########################
+############   LINEAR REGRESSION   ############
 #la prossima come idea per matrice di scatterplot con regressione lineare
 #la metto tutta come commento per ora (file esempio caricato come )
 
@@ -315,6 +327,3 @@ dataset$diagnosis <- as.factor(dataset$diagnosis)
 #                bty = "o", cex = 0.9)
 #       },
 #       main = "CONTROL")
-
-#####################
-
