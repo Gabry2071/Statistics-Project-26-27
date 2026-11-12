@@ -398,3 +398,83 @@ dev.off()
 #                bty = "o", cex = 0.9)
 #       },
 #       main = "CONTROL")
+
+
+
+########## NULL HYPOTHESIS ##########
+# We used the t-test, a statistic test used to visualize if there is a significant difference between the mean of two groups
+
+# T-TEST FOR LYVE1
+# No Cancer vs Benign
+t.test(LYVE1_1, LYVE1_2)
+
+# No Cancer vs PDAC
+t.test(LYVE1_1, LYVE1_3)
+
+# Benign vs PDAC
+t.test(LYVE1_2, LYVE1_3)
+
+
+# T-TEST FOR REG1B
+# No Cancer vs Benign
+t.test(reg1b_1, reg1b_2)
+
+# No Cancer vs PDAC
+t.test(reg1b_1, reg1b_3)
+
+# Benign vs PDAC
+t.test(reg1b_2, reg1b_3)
+
+
+# T-TEST FOR TFF1
+# No Cancer vs Benign
+t.test(TFF1_1, TFF1_2)
+
+# No Cancer vs PDAC
+t.test(TFF1_1, TFF1_3)
+
+# Benign vs PDAC
+t.test(TFF1_2, TFF1_3)
+
+
+##### P-VALUE CORRECTION #####
+# Correggere i p-value. Se utilizzi sempre 0.05 come soglia, aumenta la probabilità di ottenere falsi positivi.
+
+# Collect all 9 p-values
+p_values <- c(
+     
+  # LYVE1
+  t.test(LYVE1_1, LYVE1_2)$p.value,
+  t.test(LYVE1_1, LYVE1_3)$p.value,
+  t.test(LYVE1_2, LYVE1_3)$p.value,
+     
+  # REG1B
+  t.test(reg1b_1, reg1b_2)$p.value,
+  t.test(reg1b_1, reg1b_3)$p.value,
+  t.test(reg1b_2, reg1b_3)$p.value,
+  
+  # TFF1
+  t.test(TFF1_1, TFF1_2)$p.value,
+  t.test(TFF1_1, TFF1_3)$p.value,
+  t.test(TFF1_2, TFF1_3)$p.value
+)
+
+# Apply Holm correction to correct p-value. 
+# Holm correction is used to correct the p-value when more statistic test are made at once because doing 9 tests, without correction, increases the possibility of a false positive
+# Holm correction orders p-value from smallest to biggest and applies a threshold progressively less restrictive
+
+p_adjusted <- p.adjust(p_values, method = "holm")
+
+# Display results
+results <- data.frame(
+  Biomarker = rep(c("LYVE1", "REG1B", "TFF1"), each = 3),
+  Comparison = rep(c(
+    "No Cancer vs Benign",
+    "No Cancer vs PDAC",
+    "Benign vs PDAC"
+  ), 3),
+  Original_p = p_values,
+  Adjusted_p = p_adjusted
+)
+
+print(results)
