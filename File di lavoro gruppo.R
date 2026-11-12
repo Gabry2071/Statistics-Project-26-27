@@ -41,7 +41,20 @@ dataset$TFF1_Norm <- dataset$TFF1 / dataset$creatinine
 anyNA(dataset) #FALSE, (luckily) there are no NAs in the dataset
 
 
-### EXPLORATIVE ANALYSIS ###
+#### EXPLORATIVE ANALYSIS ####
+
+##Logarithm transformation
+LYVE1_1_log = log(LYVE1_1)
+LYVE1_2_log = log(LYVE1_2)
+LYVE1_3_log = log(LYVE1_3)
+
+reg1b_1_log = log(reg1b_1)
+reg1b_2_log = log(reg1b_2)
+reg1b_3_log = log(reg1b_3)
+
+TFF1_1_log = log(TFF1_1)
+TFF1_2_log = log(TFF1_2)
+TFF1_3_log = log(TFF1_3)
 
 ####LYVE1 ####
 # Description an analysis of: LYVE1
@@ -98,6 +111,13 @@ hist(LYVE1_1, xlab = 'LYVE1 expression', main = 'LYVE1 CONTROL', col ='#50C878')
 hist(LYVE1_2, xlab = 'LYVE1 expression', main = 'LYVE1 BENIGN', col = '#B284BE')
 hist(LYVE1_3, xlab = 'LYVE1 expression', main = 'LYVE1 MALIGNANT', col ='#FE0000')
 dev.off()
+
+"""par(mfrow = c(1,3))
+hist(LVYE1_1_log, xlab = 'LYVE1 expression', main = 'LYVE1 CONTROL', col ='#50C878')
+hist(LVYE1_2_log, xlab = 'LYVE1 expression', main = 'LYVE1 BENIGN', col = '#B284BE')
+hist(LVYE1_3_log, xlab = 'LYVE1 expression', main = 'LYVE1 MALIGNANT', col ='#FE0000')
+dev.off()"""
+
 
 
 #### REG1B ####
@@ -156,6 +176,7 @@ hist(reg1b_3, xlab = 'REG1B expression', main = 'REG1B MALIGNANT', col ='#FE0000
 dev.off()
 
 
+
 #### TFF1  ####
 # Description an analysis of: TFF1
 TFF1_1 = dataset$TFF1_Norm[dataset$diagnosis == 1]
@@ -211,55 +232,104 @@ hist(TFF1_2, xlab = 'TFF1 expression', main = 'TFF1 BENIGN', col = '#B284BE')
 hist(TFF1_3, xlab = 'TFF1 expression', main = 'TFF1 MALIGNANT', col ='#FE0000')
 dev.off()
 
-#### SCATTERPLOTS, VARIANCE AND COVARIANCE PAIRWISE ####
-#CONTROL
-par(mfrow = c(1,3))
-# LYVE1 vs REG1B
-plot(LYVE1_1, reg1b_1,
-     xlab = "LYVE1", ylab = "REG1B",
-     main = "CONTROL")
 
-cor(LYVE1_1, reg1b_1) # -0.01548522
-cov(LYVE1_1, reg1b_1) # -2.820755
+#### SCATTERPLOTS, VARIANCE AND COVARIANCE PAIRWISE ####
+### CONTROL
+# LYVE1 vs REG1B
+
+cor(LYVE1_1_log, reg1b_1_log) #0.1210314
+cov(LYVE1_1_log, reg1b_1_log) #0.5137796
+
+plot(LYVE1_1_log, reg1b_1_log, 
+     col = 'steelblue', pch = 19, 
+     xlab = "LYVE1", ylab = "REG1B", main = "Control")
+
+text(x = par("usr")[2],  
+     y = par("usr")[3],  
+     labels = paste("Cor:", round(cor(LYVE1_1_log, reg1b_1_log), 3)),
+     adj = c(1, -0.5),   
+     cex = 1.2,
+     col = "blue")
+
+
 # LYVE1 vs TFF1
-plot(LYVE1_1, TFF1_1,
+plot(LYVE1_1_log, TFF1_1_log, col = '#FF1DCE', pch = 19,
      xlab = "LYVE1", ylab = "TFF1",
      main = "CONTROL")
 
-cor(LYVE1_1, TFF1_1) # 0.4644655
-cov(LYVE1_1, TFF1_1) # 216.5927
+cor(LYVE1_1_log, TFF1_1_log) #0.5089118
+cov(LYVE1_1_log, TFF1_1_log) #4.155925
+
+text(x = 0,  
+     y = 0,  
+     labels = paste("Cor:", round(cor(LYVE1_1_log, TFF1_1_log), 3)),
+     adj = c(0, 0.5),   
+     cex = 1.2,
+     col = "blue")
+
+
 # REG1B vs TFF1
-plot(reg1b_1, TFF1_1,
+plot(reg1b_1_log, TFF1_1_log, col = '#FF5800', pch=19,
      xlab = "REG1B", ylab = "TFF1",
      main = "CONTROL")
 
-cor(reg1b_1, TFF1_1) # 0.1355866
-cov(reg1b_1, TFF1_1) # 2724.664
+cor(reg1b_1_log, TFF1_1_log) #0.1763473
+cov(reg1b_1_log, TFF1_1_log) #0.7037818
+
+text(x = 0,  
+     y = 0,  
+     labels = paste("Cor:", round(cor(reg1b_1_log, TFF1_1_log), 3)),
+     adj = c(0, 0.5),   
+     cex = 1.2,
+     col = "blue")
+
 
 #################### BENIGN
-
-par(mfrow = c(1,3))
 # LYVE1 vs REG1B
-plot(LYVE1_2, reg1b_2,
+plot(LYVE1_2_log, reg1b_2_log, col ='steelblue', pch=19,
      xlab = "LYVE1", ylab = "REG1B",
      main = "BENIGN")
 
-cor(LYVE1_2, reg1b_2) # 0.2452998
-cov(LYVE1_2, reg1b_2) # 326.1649
+cor(LYVE1_2_log, reg1b_2_log) 
+cov(LYVE1_2_log, reg1b_2_log) 
+
+text(x = 0,  
+     y = 0,  
+     labels = paste("Cor:", round(cor(LYVE1_2_log, reg1b_2_log), 3)),
+     adj = c(0, 1),   
+     cex = 1.2,
+     col = "blue")
+
 # LYVE1 vs TFF1
-plot(LYVE1_2, TFF1_2,
+plot(LYVE1_2_log, TFF1_2_log, col = '#FF1DCE', pch = 19,
      xlab = "LYVE1", ylab = "TFF1",
      main = "BENIGN")
 
-cor(LYVE1_2, TFF1_2) # 0.4292406
-cov(LYVE1_2, TFF1_2) # 2013.965
+cor(LYVE1_2_log, TFF1_2_log)
+cov(LYVE1_2_log, TFF1_2_log)
+
+text(x = 0,  
+     y = 0,  
+     labels = paste("Cor:", round(cor(LYVE1_2_log, TFF1_2_log), 3)),
+     adj = c(0, 1),   
+     cex = 1.2,
+     col = "blue")
+
 # REG1B vs TFF1
-plot(reg1b_2, TFF1_2,
+plot(reg1b_2_log, TFF1_2_log, col = '#FF5800', pch=19,
      xlab = "REG1B", ylab = "TFF1",
      main = "BENIGN")
 
-cor(reg1b_2, TFF1_2) # 0.4392715
-cov(reg1b_2, TFF1_2) # 84686.51
+cor(reg1b_2_log, TFF1_2_log)
+cov(reg1b_2_log, TFF1_2_log)
+
+text(x = 0,  
+     y = 0,  
+     labels = paste("Cor:", round(cor(reg1b_2_log, TFF1_2_log), 3)),
+     adj = c(0, 1),   
+     cex = 1.2,
+     col = "blue")
+
 
 ############### MALIGNANT
 
@@ -297,9 +367,10 @@ legend("topleft", legend = c("Control", "Benign", "Malignant"), fill = c('#50C87
 boxplot(TFF1_Norm ~ diagnosis, data=dataset, col = c('#50C878', '#B284BE', '#FE0000'), ylab= 'TFF1 expression')
 legend("topleft", legend = c("Control", "Benign", "Malignant"), fill = c('#50C878', '#B284BE', '#FE0000'), bty='n')
 
+dev.off()
 
 #### INFERENTIAL STATS ####
-dataset$diagnosis <- as.factor(dataset$diagnosis)
+
 
 
 ############   LINEAR REGRESSION   ############
