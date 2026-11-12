@@ -32,29 +32,16 @@ dataset$TFF1 <- as.numeric(dataset$TFF1)
 dataset$diagnosis <- as.factor(dataset$diagnosis)
 
 
-##Creating columns for normalised values
-dataset$LYVE1_Norm <- dataset$LYVE1 / dataset$creatinine
-dataset$REG1B_Norm <- dataset$REG1B / dataset$creatinine
-dataset$TFF1_Norm <- dataset$TFF1 / dataset$creatinine
+##Creating columns for normalized values (and log transformed)
+dataset$LYVE1_Norm <- log(dataset$LYVE1 / dataset$creatinine)
+dataset$REG1B_Norm <- log(dataset$REG1B / dataset$creatinine)
+dataset$TFF1_Norm <- log(dataset$TFF1 / dataset$creatinine)
 
 #check if there are NA values in the dataset (should be handled carefully)
 anyNA(dataset) #FALSE, (luckily) there are no NAs in the dataset
 
 
 #### EXPLORATIVE ANALYSIS ####
-
-##Logarithm transformation
-LYVE1_1_log = log(LYVE1_1)
-LYVE1_2_log = log(LYVE1_2)
-LYVE1_3_log = log(LYVE1_3)
-
-reg1b_1_log = log(reg1b_1)
-reg1b_2_log = log(reg1b_2)
-reg1b_3_log = log(reg1b_3)
-
-TFF1_1_log = log(TFF1_1)
-TFF1_2_log = log(TFF1_2)
-TFF1_3_log = log(TFF1_3)
 
 ####LYVE1 ####
 # Description an analysis of: LYVE1
@@ -68,14 +55,14 @@ summary(LYVE1_2)
 summary(LYVE1_3)
 
 # MEAN 
-LYVE1_m1 = mean(LYVE1_1) # 1.303221 mean diagnosis 1
-LYVE1_m2 = mean(LYVE1_2) # 3.211063 mean diagnosis 2
-LYVE1_m3 = mean(LYVE1_3) # 9.468053 mean diagnosis 3
+LYVE1_m1 = mean(LYVE1_1) 
+LYVE1_m2 = mean(LYVE1_2) 
+LYVE1_m3 = mean(LYVE1_3) 
 
 #MEDIAN 
-LYVE1_med1 = median(LYVE1_1) # 0.227452 median diagnosis 1
-LYVE1_med2 = median(LYVE1_2) # 1.516199 median diagnosis 2
-LYVE1_med3 = median(LYVE1_3) # 6.931753 median diagnosis 3
+LYVE1_med1 = median(LYVE1_1) 
+LYVE1_med2 = median(LYVE1_2) 
+LYVE1_med3 = median(LYVE1_3) 
 
 #QUANTILES 
 LYVE1_q1 = quantile(LYVE1_1) # quantiles diagnosis 1
@@ -112,14 +99,6 @@ hist(LYVE1_2, xlab = 'LYVE1 expression', main = 'LYVE1 BENIGN', col = '#B284BE')
 hist(LYVE1_3, xlab = 'LYVE1 expression', main = 'LYVE1 MALIGNANT', col ='#FE0000')
 dev.off()
 
-"""par(mfrow = c(1,3))
-hist(LVYE1_1_log, xlab = 'LYVE1 expression', main = 'LYVE1 CONTROL', col ='#50C878')
-hist(LVYE1_2_log, xlab = 'LYVE1 expression', main = 'LYVE1 BENIGN', col = '#B284BE')
-hist(LVYE1_3_log, xlab = 'LYVE1 expression', main = 'LYVE1 MALIGNANT', col ='#FE0000')
-dev.off()"""
-
-
-
 #### REG1B ####
 # Description an analysis of: REG1B
 reg1b_1 = dataset$REG1B_Norm[dataset$diagnosis == 1] #reg1b normalised values for DIAGNOSIS 1
@@ -149,14 +128,14 @@ reg1b_q3 = quantile (reg1b_3) #quantiles DIAGNOSIS 3
 reg1b_q3
 
 #VARIANCE 
-reg1b_var1 = var(reg1b_1) #7849.712 variance DIAGNOSIS 1
-reg1b_var2 = var(reg1b_2) #54634.88 variance DIAGNOSIS 2
-reg1b_var3 = var(reg1b_3) #230406.5 variance DIAGNOSIS 3
+reg1b_var1 = var(reg1b_1) 
+reg1b_var2 = var(reg1b_2) 
+reg1b_var3 = var(reg1b_3) 
 
 #STANDARD DEVIATION 
-reg1b_sd1 = sqrt(reg1b_var1) #notice: it is THE SAME as sd(reg1b_1) 88.5986
-reg1b_sd2 = sqrt(reg1b_var2) #233.741 SD DIAGNOSIS 2
-reg1b_sd3 = sqrt(reg1b_var3) #480.0067 SD DIAGNOSIS 3
+reg1b_sd1 = sqrt(reg1b_var1) 
+reg1b_sd2 = sqrt(reg1b_var2) 
+reg1b_sd3 = sqrt(reg1b_var3) 
 
 #INTERQUANTILE RANGE 
 reg1b_iqr1 = IQR(reg1b_1)#56.01297 IQR DIAGNOSIS 1
@@ -188,14 +167,14 @@ summary(TFF1_2)
 summary(TFF1_3)
 
 # MEAN 
-TFF1_m1 = mean(TFF1_1) # 171.48 mean diagnosis 1
-TFF1_m2 = mean(TFF1_2) # 575.388 mean diagnosis 2
-TFF1_m3 = mean(TFF1_3) # 1620.886 mean diagnosis 3
+TFF1_m1 = mean(TFF1_1) 
+TFF1_m2 = mean(TFF1_2) 
+TFF1_m3 = mean(TFF1_3) 
 
 #MEDIAN
-TFF1_med1 = median(TFF1_1) # 102.145 median diagnosis 1
-TFF1_med2 = median(TFF1_2) # 312.34 median diagnosis 2
-TFF1_med3 = median(TFF1_3) # 1001.937 median diagnosis 3
+TFF1_med1 = median(TFF1_1) 
+TFF1_med2 = median(TFF1_2) 
+TFF1_med3 = median(TFF1_3) 
 
 #QUANTILES
 TFF1_q1 = quantile(TFF1_1) # quantiles diagnosis 1
@@ -206,19 +185,19 @@ TFF1_q3 = quantile(TFF1_3) # quantiles diagnosis 3
 TFF1_q3
 
 #VARIANCE
-TFF1_var1 = var(TFF1_1) # 51444.451
-TFF1_var2 = var(TFF1_2) # 680287.305
-TFF1_var3 = var(TFF1_3) # 5027436.525
+TFF1_var1 = var(TFF1_1) 
+TFF1_var2 = var(TFF1_2) 
+TFF1_var3 = var(TFF1_3) 
 
 #STANDARD DEVIATION 
-TFF1_sd1 = sd(TFF1_1) # 226.813 sd diagnosis 1
-TFF1_sd2 = sd(TFF1_2) # 824.795 sd diagnosis 2
-TFF1_sd3 = sd(TFF1_3) # 2242.194 sd diagnosis 3
+TFF1_sd1 = sd(TFF1_1) 
+TFF1_sd2 = sd(TFF1_2) 
+TFF1_sd3 = sd(TFF1_3) 
 
 #INTERQUANTILE RANGE
-TFF1_iqr1 = IQR(TFF1_1) # 222.1916 iqr diagnosis 1
-TFF1_iqr2 = IQR(TFF1_2) # 545.581 iqr diagnosis 2
-TFF1_iqr3 = IQR(TFF1_3) # 1710.734 iqr diagnosis 3
+TFF1_iqr1 = IQR(TFF1_1) 
+TFF1_iqr2 = IQR(TFF1_2) 
+TFF1_iqr3 = IQR(TFF1_3) 
 
 #HISTOGRAMS
 #library(MASS)
@@ -237,95 +216,95 @@ dev.off()
 ### CONTROL
 # LYVE1 vs REG1B
 
-cor(LYVE1_1_log, reg1b_1_log) #0.1210314
-cov(LYVE1_1_log, reg1b_1_log) #0.5137796
+cor1 = cor(LYVE1_1, reg1b_1) 
+cov(LYVE1_1, reg1b_1) 
 
-plot(LYVE1_1_log, reg1b_1_log, 
+plot(LYVE1_1, reg1b_1, 
      col = 'steelblue', pch = 19, 
      xlab = "LYVE1", ylab = "REG1B", main = "Control")
 
 text(x = par("usr")[2],  
      y = par("usr")[3],  
-     labels = paste("Cor:", round(cor(LYVE1_1_log, reg1b_1_log), 3)),
+     labels = paste("Cor:", round(cor1, 3)),
      adj = c(1, -0.5),   
      cex = 1.2,
      col = "blue")
 
 
 # LYVE1 vs TFF1
-plot(LYVE1_1_log, TFF1_1_log, col = '#FF1DCE', pch = 19,
+plot(LYVE1_1, TFF1_1, col = '#FF1DCE', pch = 19,
      xlab = "LYVE1", ylab = "TFF1",
      main = "CONTROL")
 
-cor(LYVE1_1_log, TFF1_1_log) #0.5089118
-cov(LYVE1_1_log, TFF1_1_log) #4.155925
+cor(LYVE1_1, TFF1_1)
+cov(LYVE1_1, TFF1_1) 
 
 text(x = 0,  
      y = 0,  
-     labels = paste("Cor:", round(cor(LYVE1_1_log, TFF1_1_log), 3)),
+     labels = paste("Cor:", round(cor(LYVE1_1, TFF1_1), 3)),
      adj = c(0, 0.5),   
      cex = 1.2,
      col = "blue")
 
 
 # REG1B vs TFF1
-plot(reg1b_1_log, TFF1_1_log, col = '#FF5800', pch=19,
+plot(reg1b_1, TFF1_1, col = '#FF5800', pch=19,
      xlab = "REG1B", ylab = "TFF1",
      main = "CONTROL")
 
-cor(reg1b_1_log, TFF1_1_log) #0.1763473
-cov(reg1b_1_log, TFF1_1_log) #0.7037818
+cor(reg1b_1, TFF1_1)
+cov(reg1b_1, TFF1_1)
 
 text(x = 0,  
      y = 0,  
-     labels = paste("Cor:", round(cor(reg1b_1_log, TFF1_1_log), 3)),
-     adj = c(0, 0.5),   
+     labels = paste("Cor:", round(cor(reg1b_1, TFF1_1), 3)),
+     adj = c(3, 0.5),   
      cex = 1.2,
      col = "blue")
 
 
 #################### BENIGN
 # LYVE1 vs REG1B
-plot(LYVE1_2_log, reg1b_2_log, col ='steelblue', pch=19,
+plot(LYVE1_2, reg1b_2, col ='steelblue', pch=19,
      xlab = "LYVE1", ylab = "REG1B",
      main = "BENIGN")
 
-cor(LYVE1_2_log, reg1b_2_log) 
-cov(LYVE1_2_log, reg1b_2_log) 
+cor(LYVE1_2, reg1b_2) 
+cov(LYVE1_2, reg1b_2) 
 
 text(x = 0,  
      y = 0,  
-     labels = paste("Cor:", round(cor(LYVE1_2_log, reg1b_2_log), 3)),
+     labels = paste("Cor:", round(cor(LYVE1_2, reg1b_2), 3)),
      adj = c(0, 1),   
      cex = 1.2,
      col = "blue")
 
 # LYVE1 vs TFF1
-plot(LYVE1_2_log, TFF1_2_log, col = '#FF1DCE', pch = 19,
+plot(LYVE1_2, TFF1_2, col = '#FF1DCE', pch = 19,
      xlab = "LYVE1", ylab = "TFF1",
      main = "BENIGN")
 
-cor(LYVE1_2_log, TFF1_2_log)
-cov(LYVE1_2_log, TFF1_2_log)
+cor(LYVE1_2, TFF1_2)
+cov(LYVE1_2, TFF1_2)
 
 text(x = 0,  
      y = 0,  
-     labels = paste("Cor:", round(cor(LYVE1_2_log, TFF1_2_log), 3)),
+     labels = paste("Cor:", round(cor(LYVE1_2, TFF1_2), 3)),
      adj = c(0, 1),   
      cex = 1.2,
      col = "blue")
 
 # REG1B vs TFF1
-plot(reg1b_2_log, TFF1_2_log, col = '#FF5800', pch=19,
+plot(reg1b_2, TFF1_2, col = '#FF5800', pch=19,
      xlab = "REG1B", ylab = "TFF1",
      main = "BENIGN")
 
-cor(reg1b_2_log, TFF1_2_log)
-cov(reg1b_2_log, TFF1_2_log)
+cor(reg1b_2, TFF1_2)
+cov(reg1b_2, TFF1_2)
 
 text(x = 0,  
      y = 0,  
-     labels = paste("Cor:", round(cor(reg1b_2_log, TFF1_2_log), 3)),
+     labels = paste("Cor:", round(cor(reg1b_2, TFF1_2), 3)),
      adj = c(0, 1),   
      cex = 1.2,
      col = "blue")
@@ -334,38 +313,59 @@ text(x = 0,
 ############### MALIGNANT
 
 par(mfrow = c(1,3))
+
 # LYVE1 vs REG1B
-plot(LYVE1_3, reg1b_3,
+plot(LYVE1_3, reg1b_3, col ='steelblue', pch=19,
      xlab = "LYVE1", ylab = "REG1B",
      main = "MALIGNANT")
 
-cor(LYVE1_3, reg1b_3) # 0.42723
-cov(LYVE1_3, reg1b_3) # 1816.364
+cor(LYVE1_3, reg1b_3)
+cov(LYVE1_3, reg1b_3)
+
+legend("topleft",
+       legend = paste("Cor:", round(cor(LYVE1_3, reg1b_3), 3)),
+       bty = "n",
+       cex = 1.2,
+       text.col = "blue")
+
 # LYVE1 vs TFF1
-plot(LYVE1_3, TFF1_3,
+plot(LYVE1_3, TFF1_3, col = '#FF1DCE', pch = 19,
      xlab = "LYVE1", ylab = "TFF1",
      main = "MALIGNANT")
 
-cor(LYVE1_3, TFF1_3) # 0.3842481
-cov(LYVE1_3, TFF1_3) # 7630.953
+cor(LYVE1_3, TFF1_3)
+cov(LYVE1_3, TFF1_3)
+
+legend("topleft",
+       legend = paste("Cor:", round(cor(LYVE1_3, TFF1_3), 3)),
+       bty = "n",
+       cex = 1.2,
+       text.col = "blue")
+
 # REG1B vs TFF1
-plot(reg1b_3, TFF1_3,
+plot(reg1b_3, TFF1_3, col = '#FF5800', pch=19,
      xlab = "REG1B", ylab = "TFF1",
      main = "MALIGNANT")
 
-cor(reg1b_3, TFF1_3) # 0.7202756
-cov(reg1b_3, TFF1_3) # 775209.9
+cor(reg1b_3, TFF1_3)
+cov(reg1b_3, TFF1_3)
+
+legend("topleft",
+       legend = paste("Cor:", round(cor(reg1b_3, TFF1_3), 3)),
+       bty = "n",
+       cex = 1.2,
+       text.col = "blue")
 
 ###  BOXPLOTS ###
 
 boxplot(LYVE1_Norm ~ diagnosis, data=dataset, col = c('#50C878', '#B284BE', '#FE0000'), ylab= 'LYVE1 expression')
-legend("topleft", legend = c("Control", "Benign", "Malignant"), fill = c('#50C878', '#B284BE', '#FE0000'), bty='n')
+legend("bottomright", legend = c("Control", "Benign", "Malignant"), fill = c('#50C878', '#B284BE', '#FE0000'), bty='n')
 
 boxplot(REG1B_Norm ~ diagnosis, data=dataset, col = c('#50C878', '#B284BE', '#FE0000'), ylab= 'REG1B expression')
-legend("topleft", legend = c("Control", "Benign", "Malignant"), fill = c('#50C878', '#B284BE', '#FE0000'), bty='n')
+legend("bottomright", legend = c("Control", "Benign", "Malignant"), fill = c('#50C878', '#B284BE', '#FE0000'), bty='n')
 
 boxplot(TFF1_Norm ~ diagnosis, data=dataset, col = c('#50C878', '#B284BE', '#FE0000'), ylab= 'TFF1 expression')
-legend("topleft", legend = c("Control", "Benign", "Malignant"), fill = c('#50C878', '#B284BE', '#FE0000'), bty='n')
+legend("bottomright", legend = c("Control", "Benign", "Malignant"), fill = c('#50C878', '#B284BE', '#FE0000'), bty='n')
 
 dev.off()
 
