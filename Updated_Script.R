@@ -18,10 +18,16 @@ options(scipen = 999)
 
 #install.packages("readxl")
 #install.packages("dplyr")
-library(dplyr)
 #library(readxl)
 
-dataset = read.csv("Debernardi et al 2020 data.csv")
+
+library(dplyr)
+install.packages("ggplot2")
+library(ggplot2)
+
+
+
+dataset = read.csv("Debernardi et al 2020 data.csv", header=TRUE, row.names=1, check.names = FALSE)
 #this is the complete raw dataset
 
 ##important to state we are dealing with NUMBERS
@@ -29,8 +35,16 @@ dataset$LYVE1 <- as.numeric(dataset$LYVE1)
 dataset$creatinine <- as.numeric(dataset$creatinine)
 dataset$REG1B <- as.numeric(dataset$REG1B)
 dataset$TFF1 <- as.numeric(dataset$TFF1)
-dataset$diagnosis <- as.factor(dataset$diagnosis)
 
+dataset$diagnosis <- factor(
+  dataset$diagnosis,
+  levels = c("1", "2", "3"),
+  ordered = TRUE
+) #3 Control < Intermedio < Maligno
+
+dataset$sex <- as.factor(dataset$sex) #2 levels: F M
+
+#class(dataset$age) "integer"
 
 ##Creating columns for normalized values (and log transformed)
 dataset$LYVE1_Norm <- log(dataset$LYVE1 / dataset$creatinine)
@@ -478,3 +492,40 @@ results <- data.frame(
 )
 
 print(results)
+
+### other stuff ###
+
+#### LINEAR MODEL PER CIASCUN BIOMARCATORE @claudio ####
+modello <- lm(log(Valore) ~ Diagnosi + Eta + Sesso, data = df)
+
+#### LINEAR MODEL MULTIVARIATE CASE (INCLUDE ALL THE THREE BIOMARKERS) @claudio ####
+#Quando trasformi i biomarcatori con log(Biomarker), spesso la loro distribuzione diventa normale. In questo caso, lm() è esatto, più veloce e più semplice da interpretare.
+modello_multi <- lm(
+  cbind(log(Biomarker1), log(Biomarker2), log(Biomarker3)) ~ Diagnosi + age + sex,
+  data = df
+)
+
+####tenendo la diagnosi come response #SICCOME I NOSTRI TRE LIVELLI SONO ORDINATI SEGUENDO LA PROGESSIONE DI GRAVITA' DELLA MALATTIA
+
+# 1. Imposta Diagnosi come fattore ORDINATO (dal livello più lieve al più grave)
+#Impostando l'ordine esatto Control < Intermedio < Maligno, ogni Odds Ratio maggiore di 1 indicherà un aumento del rischio di progressione verso la malignità.
+library(MASS)
+install.packages("car")
+library(car)
+install.packages("brant")
+library(brant)
+
+# Nota: standardizzare i biomarcatori (scale) rende gli OR confrontabili tra loro!
+
+clinical_model <- polr(
+  diagnosis ~ scale(LYVE1_Norm) + scale(REG1B_Norm) + scale(TFF1_Norm) + age + sex,
+  data = dataset,
+  Hess = TRUE
+)
+
+# 3. Significatività di ogni predittore
+Anova(clinical_model, type = "III")
+
+# 4. Odds Ratio (OR) per aumento di 1 Deviazione Standard di ciascun biomarcatore
+OR_clinici <- exp(cbind(OR = coef(clinical_model), confint(clinical_model)))
+print(round(OR_clinici, 3))
