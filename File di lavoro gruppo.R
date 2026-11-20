@@ -18,10 +18,18 @@ options(scipen = 999)
 
 #install.packages("readxl")
 #install.packages("dplyr")
-library(dplyr)
-library(readxl)
+#install.packages(c("dplyr", "tidyr", "ggplot2"))
+#install.packages("BiocManager")
+#BiocManager::install("EnhancedVolcano")
+#install.packages("ggplot")
+#install.packages("ggsignif")
 
-dataset = read_xlsx("dataset_stats.xlsx")[1:8] 
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(EnhancedVolcano)
+library(ggsignif)
+dataset = read.csv("Debernardi et al 2020 data.csv") 
 #this is the complete raw dataset
 
 ##important to state we are dealing with NUMBERS
@@ -477,4 +485,346 @@ results <- data.frame(
   Adjusted_p = p_adjusted
 )
 
-print(results)
+
+### PARTE SU FOLDGCHANGE CON GRAFICO E HEATMAP ###
+#### Calcolo Fold Change log2FC per LYVE1 #####
+LYVE1_1_log2 = log2((dataset$LYVE1 / dataset$creatinine))[dataset$diagnosis == 1]
+LYVE1_2_log2 = log2((dataset$LYVE1 / dataset$creatinine))[dataset$diagnosis == 2]  
+LYVE1_3_log2 = log2((dataset$LYVE1 / dataset$creatinine))[dataset$diagnosis == 3]
+
+FC_LYVE1_3vs1 = mean(LYVE1_3_log2)-mean(LYVE1_1_log2)
+FC_LYVE1_2vs1 = mean(LYVE1_2_log2)-mean(LYVE1_1_log2)
+FC_LYVE1_3vs2 = mean(LYVE1_3_log2)-mean(LYVE1_2_log2)
+
+
+#### Calcolo Fold Change log2FC per REG1B ####
+REG1B_1_log2 = log2(dataset$REG1B / dataset$creatinine)[dataset$diagnosis == 1]
+REG1B_2_log2 = log2(dataset$REG1B / dataset$creatinine)[dataset$diagnosis == 2]  
+REG1B_3_log2 = log2(dataset$REG1B / dataset$creatinine)[dataset$diagnosis == 3]
+
+FC_REG1B_3vs1 = mean(REG1B_3_log2)-mean(REG1B_1_log2)
+FC_REG1B_2vs1 = mean(REG1B_2_log2)-mean(REG1B_1_log2)
+FC_REG1B_3vs2 = mean(REG1B_3_log2)-mean(REG1B_2_log2)
+
+#### Calcolo Fold Change log2FC per TFF1 ####
+TFF1_1_log2 = log2(dataset$TFF1 / dataset$creatinine)[dataset$diagnosis == 1]
+TFF1_2_log2 = log2(dataset$TFF1 / dataset$creatinine)[dataset$diagnosis == 2]  
+TFF1_3_log2 = log2(dataset$TFF1 / dataset$creatinine)[dataset$diagnosis == 3]
+
+FC_TFF1_3vs1 = mean(TFF1_3_log2)-mean(TFF1_1_log2)
+FC_TFF1_2vs1 = mean(TFF1_2_log2)-mean(TFF1_1_log2)
+FC_TFF1_3vs2 = mean(TFF1_3_log2)-mean(TFF1_2_log2)
+
+#### BOXPLOT con FC####
+dati_box <- data.frame(
+  Biomarker = c(
+    rep("LYVE1", length(LYVE1_1_log2) + length(LYVE1_2_log2) + length(LYVE1_3_log2)),
+    rep("REG1B", length(REG1B_1_log2) + length(REG1B_2_log2) + length(REG1B_3_log2)),
+    rep("TFF1",  length(TFF1_1_log2)  + length(TFF1_2_log2)  + length(TFF1_3_log2))
+  ),
+  Group = factor(
+    c(
+      rep("1: Control", length(LYVE1_1_log2)), rep("2: Benign", length(LYVE1_2_log2)), rep("3: PDAC", length(LYVE1_3_log2)),
+      rep("1: Control", length(REG1B_1_log2)), rep("2: Benign", length(REG1B_2_log2)), rep("3: PDAC", length(REG1B_3_log2)),
+      rep("1: Control", length(TFF1_1_log2)),  rep("2: Benign", length(TFF1_2_log2)),  rep("3: PDAC", length(TFF1_3_log2))
+    ),
+    levels = c("1: Control", "2: Benign", "3: PDAC")
+  ),
+  Log2_Value = c(
+    LYVE1_1_log2, LYVE1_2_log2, LYVE1_3_log2,
+    REG1B_1_log2, REG1B_2_log2, REG1B_3_log2,
+    TFF1_1_log2,  TFF1_2_log2,  TFF1_3_log2
+  )
+)
+
+#Create the data frame for significance brackets and Log2FC annotations
+etichette_fc <- data.frame(
+  Biomarker = rep(c("LYVE1", "REG1B", "TFF1"), each = 3),
+  start = rep(c("1: Control", "2: Benign", "1: Control"), times = 3),
+  end   = rep(c("2: Benign",  "3: PDAC",   "3: PDAC"),    times = 3),
+  # Vertical height of the brackets above the maximum value in each panel
+  y_pos = c(
+    max(c(LYVE1_1_log2, LYVE1_2_log2, LYVE1_3_log2)) + c(0.8, 2.2, 3.8),
+    max(c(REG1B_1_log2, REG1B_2_log2, REG1B_3_log2)) + c(0.8, 2.2, 3.8),
+    max(c(TFF1_1_log2,  TFF1_2_log2,  TFF1_3_log2))  + c(0.8, 2.2, 3.8)
+  ),
+  # Text displayed above each bracket (rounded to 2 decimal places)
+  label = c(
+    paste0("log2FC = ", round(FC_LYVE1_2vs1, 2)),
+    paste0("log2FC = ", round(FC_LYVE1_3vs2, 2)),
+    paste0("log2FC = ", round(FC_LYVE1_3vs1, 2)),
+    
+    paste0("log2FC = ", round(FC_REG1B_2vs1, 2)),
+    paste0("log2FC = ", round(FC_REG1B_3vs2, 2)),
+    paste0("log2FC = ", round(FC_REG1B_3vs1, 2)),
+    
+    paste0("log2FC = ", round(FC_TFF1_2vs1, 2)),
+    paste0("log2FC = ", round(FC_TFF1_3vs2, 2)),
+    paste0("log2FC = ", round(FC_TFF1_3vs1, 2))
+  )
+)
+
+# 3. Plot the Boxplots with Log2FC annotations
+ggplot(dati_box, aes(x = Group, y = Log2_Value, fill = Group)) +
+  geom_boxplot(width = 0.55, alpha = 0.85, outlier.shape = 21, outlier.size = 1.5) +
+  # White diamond indicating the MEAN (used to compute Log2FC)
+  stat_summary(fun = mean, geom = "point", shape = 23, size = 3, fill = "white", color = "black") +
+  # Brackets with Log2FC values
+  geom_signif(
+    data = etichette_fc,
+    aes(xmin = start, xmax = end, annotations = label, y_position = y_pos),
+    manual = TRUE,
+    textsize = 3.2,
+    tip_length = 0.02,
+    inherit.aes = FALSE
+  ) +
+  facet_wrap(~ Biomarker, scales = "free_y") +
+  # Expand upper Y-axis margin so the top bracket is not clipped
+  scale_y_continuous(expand = expansion(mult = c(0.05, 0.15))) +
+  scale_fill_manual(values = c("#50C878", "#B284BE", "#FE0000")) +
+  labs(
+    title = "Urinary Biomarker Comparison Across Diagnostic Groups",
+    subtitle = "Horizontal line = Median | White diamond = Mean | Brackets = Log2 Fold Change",
+    x = "",
+    y = "Log2 (Biomarker / Creatinine)"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    legend.position = "none",
+    strip.text = element_text(face = "bold", size = 13),
+    axis.text.x = element_text(angle = 20, hjust = 1, face = "bold")
+  )
+
+
+
+
+
+
+#### HEATMAP ####
+#Heatmaps  biomarker divisi per le tre diagnosi Control,Benign,Malignant conisderando anche una cor fra età,sesso e diagnosi
+# ho rimesso qui le library da chiamare solo per sicurezza nell'esecuzione del codice (si posson commentare out)
+library(dplyr)
+library(ggplot2)
+sex_num <- ifelse(as.character(dataset$sex) %in% c("M", "Male", "1"), 1, 0) #trasformo sex in numerico 0/1
+#mo creo i tre gruppi con tute le loro robette
+
+df_Control <- data.frame(  
+  Pannello="1:Control",
+  LYVE1= LYVE1_1_log2,
+  REG1B=REG1B_1_log2,
+  TFF1=TFF1_1_log2,
+  Age=dataset$age[dataset$diagnosis == 1],
+  Sex=sex_num[dataset$diagnosis == 1]
+)
+
+
+df_Benign <- data.frame(  
+  Pannello="2:Benign",
+  LYVE1= LYVE1_2_log2,
+  REG1B=REG1B_2_log2,
+  TFF1=TFF1_2_log2,
+  Age=dataset$age[dataset$diagnosis == 2],
+  Sex=sex_num[dataset$diagnosis == 2]
+)
+
+
+df_Malignant <- data.frame(  
+  Pannello="3:Malignant",
+  LYVE1= LYVE1_3_log2,
+  REG1B=REG1B_3_log2,
+  TFF1=TFF1_3_log2,
+  Age=dataset$age[dataset$diagnosis == 3],
+  Sex=sex_num[dataset$diagnosis == 3]
+)
+
+
+df_diagnosi<-bind_rows(df_Control, df_Benign, df_Malignant)
+df_overall<-df_diagnosi %>% mutate(Pannello = "Overall (All)")
+
+df_tutti <- bind_rows(df_overall, df_diagnosi) %>%
+  mutate(Pannello = factor(Pannello, levels = c("Overall (All)", "1:Control", "2:Benign", "3:Malignant")))
+
+# Pearson correlation (su Age,Sex, 3 Biomarkers) per tutti e quattro i pannelli
+variables <- c("LYVE1", "REG1B", "TFF1", "Age", "Sex")
+risultati_pearson <- list()
+
+
+for (pan in levels(df_tutti$Pannello)) {
+  sub_df <- df_tutti %>% filter(Pannello == pan) %>% select(all_of(variables))
+  
+  for (v1 in variables) {
+    for (v2 in variables) {
+      test <- cor.test(sub_df[[v1]], sub_df[[v2]], method = "pearson") # p-value calcoloato in questo caso impostando H0:la r(pearson correlation) fra le due variabili sia uguale a 0
+      # quindi H1 è r!=0
+      r_val <- as.numeric(test$estimate)
+      p_val <- test$p.value
+      
+      sig <- ifelse(v1 == v2, "",
+                    ifelse(p_val < 0.001, "***",
+                           ifelse(p_val < 0.01,  "**",
+                                  ifelse(p_val < 0.05,  "*", ""))))
+      
+      risultati_pearson[[length(risultati_pearson) + 1]] <- data.frame(
+        Pannello = pan,
+        Var1 = factor(v1, levels = variables),
+        Var2 = factor(v2, levels = rev(variables)),
+        r = r_val,
+        p = p_val,
+        Label = ifelse(v1 == v2, "1.00", paste0(sprintf("%.2f", r_val), sig))
+      )
+    }
+  }
+}
+
+tabella_pearson <- bind_rows(risultati_pearson)
+
+# 5. Disegna le 4 Heatmap affiancate
+ggplot(tabella_pearson, aes(x = Var1, y = Var2, fill = r)) +
+  geom_tile(color = "white", linewidth = 0.8) +
+  geom_text(aes(label = Label), size = 3.2, fontface = "bold", color = "black") +
+  facet_wrap(~ Pannello, nrow = 1) +
+  scale_fill_gradient2(
+    low = "#2166AC", mid = "white", high = "#B2182B",
+    midpoint = 0, limits = c(-1, 1),
+    name = "Pearson r"
+  ) +
+  coord_fixed() +
+  labs(
+    title = "Pearson Correlation Matrix: Overall vs Diagnostic Groups",
+    subtitle = "Biomarkers, Age, and Sex (0 = Female, 1 = Male) | * p < 0.05 , ** p < 0.01, *** p < 0.001",
+    #i valori del p-value per Biomarker vs Biomarker tendono ad essere p<0.05 se abbiamo una correlazione diretta fra i due nello stesso gruppo di pazienti (entrmabi up o down)
+    #se fosse maggiore di 0.05 allora sono uno indipendente dall'altro
+    #Biomarker vs Sex, dato che abbiamo 0/1 abbiamo due t-test (maschi e femmine) se p<0.05 abbiamo una differenza statistica dell'espressione del biomarker fra maschi e femmine
+    # se r>0 più alto negli uomini, se r<0 più alto nelle donne, se p>0.05 allora non abbiamo differenze significative
+    #Biomarker vs Age, se p<0.05 allora i livelli cambiano in maniera significativa in base all'età, mentre se p>0.05 l'età non influenza in maniera significativa
+    #Sex vs Age abbiamo p>=0.05 e r vicino a 0 allora uomini e donne hannostessa età media(campione bilanciato)
+    #p<0.05 sbilanciamento dell'età nei due sessi se r>0 gli uomini sono mediamente più anziani, se r<0 donne sono mediamente più anziane 
+    x = "",
+    y = ""
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    strip.text = element_text(face = "bold", size = 12),
+    axis.text.x = element_text(angle = 45, hjust = 1, face = "bold"),
+    axis.text.y = element_text(face = "bold"),
+    panel.grid = element_blank()
+  )
+
+# Nel pannello Overall (All) hai tutti i pazienti messi insieme (N grande), quindi il test ha molta potenza statistica e anche un 
+# r piccolo (es. 0.20) risulta significativo (***).
+# Nei singoli gruppi (Control, Benign, Malignant), avendo meno pazienti lo stesso identico valore di r=0.20 potrebbe non avere asterischi
+# gli asterischi sono la significatività del dato rapportato alla r e al numeor di pazienti
+
+
+
+
+
+
+
+
+
+
+### GRAFICI CHE VOLENDO ABBIAMO MA DOBBIAMO ANCORA DISCUTERE COSA FARNE ###
+####VULCAN PLOT####
+# dati_volcano <- data.frame(
+#   Biomarker = rep(c("LYVE1", "REG1B", "TFF1"), times = 3),
+#   Confronto = rep(c("3 vs 1 (PDAC vs Ctrl)", "2 vs 1 (Benigno vs Ctrl)", "3 vs 2 (PDAC vs Benigno)"), each = 3),
+#   Etichetta = c(
+#     "LYVE1 (3 vs 1)", "REG1B (3 vs 1)", "TFF1 (3 vs 1)",
+#     "LYVE1 (2 vs 1)", "REG1B (2 vs 1)", "TFF1 (2 vs 1)",
+#     "LYVE1 (3 vs 2)", "REG1B (3 vs 2)", "TFF1 (3 vs 2)"
+#   ),
+#   Log2FC = c(
+#     FC_LYVE1_3vs1, FC_REG1B_3vs1, FC_TFF1_3vs1,
+#     FC_LYVE1_2vs1, FC_REG1B_2vs1, FC_TFF1_2vs1,
+#     FC_LYVE1_3vs2, FC_REG1B_3vs2, FC_TFF1_3vs2
+#   ),
+#   pvalue = c(
+#     t.test(LYVE1_3_log2, LYVE1_1_log2)$p.value,
+#     t.test(REG1B_3_log2, REG1B_1_log2)$p.value,
+#     t.test(TFF1_3_log2,  TFF1_1_log2)$p.value,
+#     
+#     t.test(LYVE1_2_log2, LYVE1_1_log2)$p.value,
+#     t.test(REG1B_2_log2, REG1B_1_log2)$p.value,
+#     t.test(TFF1_2_log2,  TFF1_1_log2)$p.value,
+#     
+#     t.test(LYVE1_3_log2, LYVE1_2_log2)$p.value,
+#     t.test(REG1B_3_log2, REG1B_2_log2)$p.value,
+#     t.test(TFF1_3_log2,  TFF1_2_log2)$p.value
+#   )
+# )
+# 
+# 
+# EnhancedVolcano(
+#   dati_volcano,
+#   lab = dati_volcano$Etichetta,   # Etichette (es. "LYVE1 (3 vs 1)")
+#   x = "Log2FC",                   # Nome colonna asse X
+#   y = "pvalue",                   # Nome colonna asse Y (fa lui -log10 in automatico!)
+#   
+#   # Soglie di significatività (puoi modificarle a piacere)
+#   pCutoff = 0.05,                 # Soglia p-value (linea orizzontale)
+#   FCcutoff = 1.0,                 # Soglia |Log2FC| (linee verticali)
+#   
+#   # Estetica dei punti e delle etichette
+#   pointSize = 4.5,
+#   labSize = 4.0,
+#   drawConnectors = TRUE,          # Disegna le linee che collegano il punto all'etichetta
+#   widthConnectors = 0.5,
+#   max.overlaps = Inf,             # Forza la visualizzazione di tutte e 9 le etichette
+#   
+#   # Titoli e legende
+#   title = "Volcano Plot - Biomarker Urinari",
+#   subtitle = "Confronti tra Control (1), Benign (2) e Malignant (3)",
+#   caption = "Soglie: |Log2FC| > 1 e p-value < 0.05",
+#   legendPosition = "bottom",
+#   legendLabSize = 10,
+#   legendIconSize = 4.0
+# )
+
+
+##### VIOLIN PLOT#####
+# # 1. Crea la tabella (data.frame) unendo i tuoi 9 vettori log2
+# dati_violin <- data.frame(
+#   Biomarker = c(
+#     rep("LYVE1", length(LYVE1_1_log2) + length(LYVE1_2_log2) + length(LYVE1_3_log2)),
+#     rep("REG1B", length(REG1B_1_log2) + length(REG1B_2_log2) + length(REG1B_3_log2)),
+#     rep("TFF1",  length(TFF1_1_log2)  + length(TFF1_2_log2)  + length(TFF1_3_log2))
+#   ),
+#   Gruppo = factor(
+#     c(
+#       rep("1: Control", length(LYVE1_1_log2)), rep("2: Benign", length(LYVE1_2_log2)), rep("3: PDAC", length(LYVE1_3_log2)),
+#       rep("1: Control", length(REG1B_1_log2)), rep("2: Benign", length(REG1B_2_log2)), rep("3: PDAC", length(REG1B_3_log2)),
+#       rep("1: Control", length(TFF1_1_log2)),  rep("2: Benign", length(TFF1_2_log2)),  rep("3: PDAC", length(TFF1_3_log2))
+#     ),
+#     levels = c("1: Control", "2: Benign", "3: Malignant")
+#   ),
+#   Valore_Log2 = c(
+#     LYVE1_1_log2, LYVE1_2_log2, LYVE1_3_log2,
+#     REG1B_1_log2, REG1B_2_log2, REG1B_3_log2,
+#     TFF1_1_log2,  TFF1_2_log2,  TFF1_3_log2
+#   )
+# )
+# 
+# # 2. Disegna il Violin Plot con Boxplot interno e punti dei pazienti
+# ggplot(dati_violin, aes(x = Gruppo, y = Valore_Log2, fill = Gruppo)) +
+#   geom_violin(trim = FALSE, alpha = 0.6, color = NA) +
+#   geom_boxplot(width = 0.15, fill = "white", outlier.shape = NA, alpha = 0.9) +
+#   geom_jitter(width = 0.12, size = 1, alpha = 0.35, color = "black") +
+#   facet_wrap(~ Biomarker, scales = "free_y") +
+#   scale_fill_manual(values = c("#4DBBD5", "#F39B7F", "#E64B35")) +
+#   labs(
+#     title = "Biomarkers distribution in the 3 groups",
+#     x = "",
+#     y = "LOG2FC"
+#   ) +
+#   theme_minimal(base_size = 12) +
+#   theme(
+#     legend.position = "none",
+#     strip.text = element_text(face = "bold", size = 13),
+#     axis.text.x = element_text(angle = 20, hjust = 1, face = "bold")
+#   )
+
+
+
+
+
