@@ -30,6 +30,9 @@ library(ggplot2)
 dataset = read.csv("Debernardi et al 2020 data.csv", header=TRUE, row.names=1, check.names = FALSE)
 #this is the complete raw dataset
 
+#questo per eliminare la diagonale del plot (prima presentazione progetto)
+dataset <- dataset[-which(abs(dataset$TFF1 / (1000 * dataset$LYVE1) - 1) < 1e-5), ]
+
 ##important to state we are dealing with NUMBERS
 dataset$LYVE1 <- as.numeric(dataset$LYVE1)
 dataset$creatinine <- as.numeric(dataset$creatinine)
