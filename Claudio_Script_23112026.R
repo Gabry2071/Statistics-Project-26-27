@@ -231,10 +231,33 @@ dev.off()
 # Jittering per rendere visibili i punti sovrapposti
 set.seed(123)
 
+
+set.seed(123)
+
+
+set.seed(123)
+
 scatter_jitter <- function(x, y, ...) {
+  # Scatterplot with jittering
   plot(jitter(x, amount = 0.2),
        jitter(y, amount = 0.2), ...)
+  # Linear regression
+  modello <- lm(y ~ x)
+  abline(modello, col = "red", lwd = 2)
+  # Regression equation
+  equazione <- sprintf("y = %.3fx %+.3f",
+                       coef(modello)[2],
+                       coef(modello)[1])
+  # Pearson correlation
+  correlazione <- sprintf("Cor: %.3f", cor(x, y))
+  # Display equation and correlation
+  legend("bottomleft",
+         legend = c(equazione, correlazione),
+         text.col = c("red", "blue"),
+         bty = "n", cex = 0.9)
 }
+
+
 
 ### CONTROL
 # LYVE1 vs REG1B
@@ -246,14 +269,12 @@ scatter_jitter(LYVE1_1, reg1b_1,
      col = 'steelblue', pch = 19, 
      xlab = "LYVE1", ylab = "REG1B", main = "CONTROL")
 
-text(x = par("usr")[2],  
-     y = par("usr")[3],  
-     labels = paste("Cor:", round(cor1, 3)),
-     adj = c(1, -0.5),   
-     cex = 1.2,
-     col = "blue")
-
-abline(lm(reg1b_1 ~ LYVE1_1), col = "red", lwd = 2)
+# text(x = par("usr")[2],  
+#      y = par("usr")[3],  
+#      labels = paste("Cor:", round(cor1, 3)),
+#      adj = c(1, -0.5),   
+#      cex = 1.2,
+#      col = "blue")
 
 # LYVE1 vs TFF1
 scatter_jitter(LYVE1_1, TFF1_1, col = '#FF1DCE', pch = 19,
@@ -263,14 +284,12 @@ scatter_jitter(LYVE1_1, TFF1_1, col = '#FF1DCE', pch = 19,
 cor(LYVE1_1, TFF1_1)
 cov(LYVE1_1, TFF1_1) 
 
-text(x = 0,  
-     y = 0,  
-     labels = paste("Cor:", round(cor(LYVE1_1, TFF1_1), 3)),
-     adj = c(0, 0.5),   
-     cex = 1.2,
-     col = "blue")
-
-abline(lm(TFF1_1 ~ LYVE1_1), col="red", lwd=2)
+# text(x = 0,  
+#      y = 0,  
+#      labels = paste("Cor:", round(cor(LYVE1_1, TFF1_1), 3)),
+#      adj = c(0, 0.5),   
+#      cex = 1.2,
+#      col = "blue")
 
 # REG1B vs TFF1
 scatter_jitter(reg1b_1, TFF1_1, col = '#FF5800', pch=19,
@@ -280,14 +299,12 @@ scatter_jitter(reg1b_1, TFF1_1, col = '#FF5800', pch=19,
 cor(reg1b_1, TFF1_1)
 cov(reg1b_1, TFF1_1)
 
-text(x = 0,  
-     y = 0,  
-     labels = paste("Cor:", round(cor(reg1b_1, TFF1_1), 3)),
-     adj = c(3, 0.5),   
-     cex = 1.2,
-     col = "blue")
-
-abline(lm(TFF1_1 ~ reg1b_1), col="red", lwd=2)
+# text(x = 0,  
+#      y = 0,  
+#      labels = paste("Cor:", round(cor(reg1b_1, TFF1_1), 3)),
+#      adj = c(3, 0.5),   
+#      cex = 1.2,
+#      col = "blue")
 
 #################### BENIGN
 # LYVE1 vs REG1B
@@ -298,14 +315,12 @@ scatter_jitter(LYVE1_2, reg1b_2, col ='steelblue', pch=19,
 cor(LYVE1_2, reg1b_2) 
 cov(LYVE1_2, reg1b_2) 
 
-text(x = 0,  
-     y = 0,  
-     labels = paste("Cor:", round(cor(LYVE1_2, reg1b_2), 3)),
-     adj = c(0, 1),   
-     cex = 1.2,
-     col = "blue")
-
-abline(lm(reg1b_2 ~ LYVE1_2), col="red", lwd=2)
+# text(x = 0,  
+#      y = 0,  
+#      labels = paste("Cor:", round(cor(LYVE1_2, reg1b_2), 3)),
+#      adj = c(0, 1),   
+#      cex = 1.2,
+#      col = "blue")
 
 # LYVE1 vs TFF1
 scatter_jitter(LYVE1_2, TFF1_2, col = '#FF1DCE', pch = 19,
@@ -315,14 +330,12 @@ scatter_jitter(LYVE1_2, TFF1_2, col = '#FF1DCE', pch = 19,
 cor(LYVE1_2, TFF1_2)
 cov(LYVE1_2, TFF1_2)
 
-text(x = 0,  
-     y = 0,  
-     labels = paste("Cor:", round(cor(LYVE1_2, TFF1_2), 3)),
-     adj = c(0, 1),   
-     cex = 1.2,
-     col = "blue")
-
-abline(lm(TFF1_2 ~ LYVE1_2), col="red", lwd=2)
+# text(x = 0,  
+#      y = 0,  
+#      labels = paste("Cor:", round(cor(LYVE1_2, TFF1_2), 3)),
+#      adj = c(0, 1),   
+#      cex = 1.2,
+#      col = "blue")
 
 # REG1B vs TFF1
 scatter_jitter(reg1b_2, TFF1_2, col = '#FF5800', pch=19,
@@ -332,14 +345,12 @@ scatter_jitter(reg1b_2, TFF1_2, col = '#FF5800', pch=19,
 cor(reg1b_2, TFF1_2)
 cov(reg1b_2, TFF1_2)
 
-text(x = 0,  
-     y = 0,  
-     labels = paste("Cor:", round(cor(reg1b_2, TFF1_2), 3)),
-     adj = c(0, 1),   
-     cex = 1.2,
-     col = "blue")
-
-abline(lm(TFF1_2 ~ reg1b_2), col="red", lwd=2)
+# text(x = 0,  
+#      y = 0,  
+#      labels = paste("Cor:", round(cor(reg1b_2, TFF1_2), 3)),
+#      adj = c(0, 1),   
+#      cex = 1.2,
+#      col = "blue")
 
 ############### MALIGNANT
 
@@ -353,13 +364,11 @@ scatter_jitter(LYVE1_3, reg1b_3, col ='steelblue', pch=19,
 cor(LYVE1_3, reg1b_3)
 cov(LYVE1_3, reg1b_3)
 
-legend("topleft",
-       legend = paste("Cor:", round(cor(LYVE1_3, reg1b_3), 3)),
-       bty = "n",
-       cex = 1.2,
-       text.col = "blue")
-
-abline(lm(reg1b_3 ~ LYVE1_3), col="red", lwd=2)
+# legend("topleft",
+#        legend = paste("Cor:", round(cor(LYVE1_3, reg1b_3), 3)),
+#        bty = "n",
+#        cex = 1.2,
+#        text.col = "blue")
 
 # LYVE1 vs TFF1
 scatter_jitter(LYVE1_3, TFF1_3, col = '#FF1DCE', pch = 19,
@@ -369,13 +378,11 @@ scatter_jitter(LYVE1_3, TFF1_3, col = '#FF1DCE', pch = 19,
 cor(LYVE1_3, TFF1_3)
 cov(LYVE1_3, TFF1_3)
 
-legend("topleft",
-       legend = paste("Cor:", round(cor(LYVE1_3, TFF1_3), 3)),
-       bty = "n",
-       cex = 1.2,
-       text.col = "blue")
-
-abline(lm(TFF1_3 ~ LYVE1_3), col="red", lwd=2)
+# legend("topleft",
+#        legend = paste("Cor:", round(cor(LYVE1_3, TFF1_3), 3)),
+#        bty = "n",
+#        cex = 1.2,
+#        text.col = "blue")
 
 # REG1B vs TFF1
 scatter_jitter(reg1b_3, TFF1_3, col = '#FF5800', pch=19,
@@ -385,13 +392,11 @@ scatter_jitter(reg1b_3, TFF1_3, col = '#FF5800', pch=19,
 cor(reg1b_3, TFF1_3)
 cov(reg1b_3, TFF1_3)
 
-legend("topleft",
-       legend = paste("Cor:", round(cor(reg1b_3, TFF1_3), 3)),
-       bty = "n",
-       cex = 1.2,
-       text.col = "blue")
-
-abline(lm(TFF1_3 ~ reg1b_3), col="red", lwd=2)
+# legend("topleft",
+#        legend = paste("Cor:", round(cor(reg1b_3, TFF1_3), 3)),
+#        bty = "n",
+#        cex = 1.2,
+#        text.col = "blue")
 
 ###  BOXPLOTS ###
 
@@ -518,8 +523,6 @@ print(results)
 
 ### other stuff ###
 
-#### LINEAR MODEL PER CIASCUN BIOMARCATORE @claudio ####
-modello <- lm(log(Valore) ~ Diagnosi + Eta + Sesso, data = df)
 
 #### LINEAR MODEL MULTIVARIATE CASE (INCLUDE ALL THE THREE BIOMARKERS) @claudio ####
 #Quando trasformi i biomarcatori con log(Biomarker), spesso la loro distribuzione diventa normale. In questo caso, lm() è esatto, più veloce e più semplice da interpretare.
